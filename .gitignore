@@ -1,0 +1,8 @@
+.vs
+bin
+obj
+.user
+.suo
+local.settings.json
+serviceDependencies.local.json
+serviceDependencies.local.json.user
