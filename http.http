@@ -1,1 +1,4 @@
 POST http://localhost:7071/api/numbers
+
+### Prod
+POST https://numberservice-aue.azurewebsites.net/api/numbers
