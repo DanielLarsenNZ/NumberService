@@ -1,1 +1,1 @@
-GET http://localhost:7071/api/GetNumber
+POST http://localhost:7071/api/numbers
