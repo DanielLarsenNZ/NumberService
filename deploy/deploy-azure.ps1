@@ -39,15 +39,12 @@ $instrumentationKey = ( az monitor app-insights component create --app $insights
 
 # FUNCTION APP
 az functionapp create -n $functionApp -g $rg --consumption-plan-location $location --functions-version 3 `
-    --app-insights $insights --app-insights-key $instrumentationKey --deployment-source-url $repo `
-    -s $storage 
+    --app-insights $insights --app-insights-key $instrumentationKey -s $storage
 az functionapp config appsettings set -n $functionApp -g $rg --settings `
     "CosmosDbConnectionString=$connString" `
     "CosmosDbDatabaseId=$cosmosDB" `
     "CosmosDbContainerId=$container"
-    #"AzureWebJobsStorage=$webjobsStorageConnection" `
-    #"APPINSIGHTS_INSTRUMENTATIONKEY=$instrumentationKey" `
-
+az functionapp deployment source config -n $functionApp -g $rg --repo-url $repo --branch 'main'
 
 # Tear down
 # az group delete -n $rg --yes
