@@ -16,6 +16,14 @@ Free numbers here!
 
 ## Phase 1
 
+Number generation requires a strong write. It is not possible to have a strong write and multiple write regions, even with a consensus algorithm (not even Cosmos DB offers strong multi-region writes).
+
+The Google **Chubby lock service** is actually a single write region service. It orchestrates a master<sup>1</sup>. The read replicas (which may be thousands of miles away) are mirrors and are eventually consistent. This is OK because chubby is essentially a consistent cache lock service.
+
+Phase 1 fulfils the sequential guarantee requirement with Azure Cosmos DB and Functions at a cost of ~NZ$75 per month for 28 numbers per second.
+
+### Analysis
+
 * 1 Cosmos DB Region. Zone Redundant.
 * 1 Azure Functions (consumption) region
 * 99.94% uptime. No region failover
@@ -31,5 +39,11 @@ Free numbers here!
 
 ### Costs
 
+> 🧮 [Azure Pricing Calculator estimate](https://azure.com/e/cfb40099955e4f83bdfe059840ece9dd)
+
 * Cosmos DB, single region (Australia East), ZR, 400 RU/s, 1GB data = NZ$51.21 /month
 * Azure Functions, Consumption, Australia East, @28RPS = NZ$23.90 /month
+
+## References and links
+
+<sup>1</sup> [The Chubby lock service for loosely-coupled distributed systems](https://research.google.com/archive/chubby-osdi06.pdf), section 2.12.
