@@ -1,4 +1,4 @@
-POST http://localhost:7071/api/numbers
+PUT http://localhost:7071/api/numbers/free
 
 ### Prod
-POST https://numberservice-aue.azurewebsites.net/api/numbers
+PUT https://numberservice-aue.azurewebsites.net/api/numbers/free

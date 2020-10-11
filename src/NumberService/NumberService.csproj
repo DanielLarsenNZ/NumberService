@@ -4,6 +4,7 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.15.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.14.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
   </ItemGroup>
