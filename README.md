@@ -6,6 +6,14 @@ Free numbers here!
 
     PUT https://numberservice-aue.azurewebsites.net/api/numbers/free
 
+## Getting started
+
+Check the constant variables in `deploy-azure.ps1` and `deploy-sprocs.ps1` and make changes if required.
+
+1. `az login`
+1. Run `deploy/deploy-azure.ps1`
+1. Run `deploy/deploy-sprocs.ps1`
+
 ## Requirements
 
 * Each request for a new number must return a number that is unique and one greater than the last number generated (for all clients).
@@ -20,7 +28,11 @@ Number generation requires a strong write. It is not possible to have a strong w
 
 The Google **Chubby lock service** is actually a single write region service. It orchestrates a master<sup>1</sup>. The read replicas (which may be thousands of miles away) are mirrors and are eventually consistent. This is OK because chubby is essentially a consistent cache lock service.
 
-Phase 1 fulfils the sequential guarantee requirement with Azure Cosmos DB and Functions at a cost of ~NZ$75 per month for 28 numbers per second.
+Phase 1 fulfils the sequential guarantee requirement with Azure Cosmos DB and Functions. A Cosmos DB stored procedure is used to read a lock document, increment the number, and replacement (with an etag pre-condition) in one procedure. If the proc is unable to replace the document (due another client updating first) then the proc will throw an exception.
+
+[Stored procedures and triggers are always executed on the primary replica of an Azure Cosmos container](https://docs.microsoft.com/en-us/azure/cosmos-db/stored-procedures-triggers-udfs#data-consistency#:~:text=Stored%20procedures%20and%20triggers%20are%20always%20executed%20on%20the%20primary%20replica%20of%20an%20Azure%20Cosmos%20container). This guarantees strong consistency within the proc (regardless of container consistency level) and is perfect for this use case. It is also interesting to note that Cosmos will ensure a [local majority quorum write before acknowledging back to the client](https://docs.microsoft.com/en-us/azure/cosmos-db/consistency-levels-tradeoffs#consistency-levels-and-throughput) (regardless of container consistency level). Strong consistency and multi-region reads ensures global majority quorum writes. 
+
+ The phase one cost is ~NZ$75 per month for 28 numbers per second.
 
 ### Analysis
 

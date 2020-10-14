@@ -21,6 +21,7 @@ while ($true) {
             Write-Host $response -ForegroundColor White
         }
         $lastNumber = $response.Number
+        Write-Host
     }
 
     Start-Sleep -Seconds 5
