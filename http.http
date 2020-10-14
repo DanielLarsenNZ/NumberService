@@ -1,4 +1,8 @@
+### PUT local
 PUT http://localhost:7071/api/numbers/free
 
-### Prod
+### GET local
+GET http://localhost:7071/api/numbers/free
+
+### PUT
 PUT https://numberservice-aue.azurewebsites.net/api/numbers/free

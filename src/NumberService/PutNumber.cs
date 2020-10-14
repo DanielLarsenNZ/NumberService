@@ -14,17 +14,16 @@ namespace NumberService
     public class PutNumber
     {
         private static readonly string _clientId = Guid.NewGuid().ToString("N");
-        private static readonly Container _container =
-            new CosmosClient(Environment.GetEnvironmentVariable("CosmosDbConnectionString"))
+        private readonly TelemetryClient _telemetry;
+        private readonly Container _container;
+
+        public PutNumber(TelemetryClient telemetry, CosmosClient cosmos)
+        {
+            _telemetry = telemetry;
+            _container = cosmos
             .GetContainer(
                 Environment.GetEnvironmentVariable("CosmosDbDatabaseId"),
                 Environment.GetEnvironmentVariable("CosmosDbContainerId"));
-        private readonly TelemetryClient _telemetry;
-
-
-        public PutNumber(TelemetryClient telemetry)
-        {
-            _telemetry = telemetry;
         }
 
         [FunctionName("PutNumber")]
@@ -39,6 +38,7 @@ namespace NumberService
                 new dynamic[] { key, _clientId }));
 
             var number = response.Resource;
+            number.RequestCharge = response.RequestCharge;
 
             // As long as sproc is written correctly, this case should never be true.
             if (number.ClientId != _clientId) throw new InvalidOperationException($"Response ClientId \"{number.ClientId}\" does not match ClientId \"{_clientId}\".");

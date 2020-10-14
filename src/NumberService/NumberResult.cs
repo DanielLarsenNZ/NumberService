@@ -13,5 +13,8 @@ namespace NumberService
         
         [JsonProperty("_etag")]
         public string ETag { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public double? RequestCharge { get; set; }
     }
 }
