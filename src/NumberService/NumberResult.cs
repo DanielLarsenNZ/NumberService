@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Azure.Cosmos;
+using Newtonsoft.Json;
 
 namespace NumberService
 {
@@ -16,5 +17,7 @@ namespace NumberService
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public double? RequestCharge { get; set; }
+
+        public CosmosDiagnostics CosmosDiagnostics { get; set; }
     }
 }

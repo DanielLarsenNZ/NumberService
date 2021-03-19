@@ -5,6 +5,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,6 +40,15 @@ namespace NumberService
 
             var number = response.Resource;
             number.RequestCharge = response.RequestCharge;
+
+            try
+            {
+                number.CosmosDiagnostics = JsonConvert.DeserializeObject<CosmosDiagnostics>(response.Diagnostics.ToString());
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, "Could not deserialize Diagnostics");
+            }
 
             // As long as sproc is written correctly, this case should never be true.
             if (number.ClientId != _clientId) throw new InvalidOperationException($"Response ClientId \"{number.ClientId}\" does not match ClientId \"{_clientId}\".");

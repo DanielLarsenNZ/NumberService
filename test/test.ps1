@@ -5,6 +5,7 @@ while ($true) {
     if ($null -ne $response) {
         if ($response.Number -ne $lastNumber + 1) {
             Write-Host $response -ForegroundColor Yellow
+            Write-Error $response
         } else {
             Write-Host $response -ForegroundColor White
         }
@@ -17,6 +18,7 @@ while ($true) {
     if ($null -ne $response) {
         if ($response.Number -ne $lastNumber) {
             Write-Host $response -ForegroundColor Yellow
+            Write-Error $response
         } else {
             Write-Host $response -ForegroundColor White
         }
@@ -30,6 +32,7 @@ while ($true) {
     if ($null -ne $response) {
         if ($response.Number -ne $lastNumber + 1) {
             Write-Host $response -ForegroundColor Yellow
+            Write-Error $response
         } else {
             Write-Host $response -ForegroundColor White
         }
@@ -42,6 +45,7 @@ while ($true) {
     if ($null -ne $response) {
         if ($response.Number -ne $lastNumber) {
             Write-Host $response -ForegroundColor Yellow
+            Write-Error $response
         } else {
             Write-Host $response -ForegroundColor White
         }
