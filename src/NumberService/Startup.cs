@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 [assembly: FunctionsStartup(typeof(NumberService.Startup))]
 
@@ -12,7 +13,16 @@ namespace NumberService
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddSingleton((c) => {
-                return new CosmosClient(Environment.GetEnvironmentVariable("CosmosDbConnectionString"));
+                var options = new CosmosClientOptions();
+                string preferredRegions = Environment.GetEnvironmentVariable("CosmosApplicationPreferredRegions");
+                
+                if (!string.IsNullOrEmpty(preferredRegions))
+                {
+                    var regions = preferredRegions.Split(';').ToList();
+                    options.ApplicationPreferredRegions = regions;
+                }
+
+                return new CosmosClient(Environment.GetEnvironmentVariable("CosmosDbConnectionString"), options);
             });
         }
     }
