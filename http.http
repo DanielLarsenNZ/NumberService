@@ -1,5 +1,5 @@
 ### PUT local
-PUT http://localhost:7071/api/numbers/free
+PUT http://localhost:7071/api/numbers/free?diagnostics
 
 ### GET local
 GET http://localhost:7071/api/numbers/free

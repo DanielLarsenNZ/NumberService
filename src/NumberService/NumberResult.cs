@@ -18,6 +18,7 @@ namespace NumberService
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public double? RequestCharge { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public CosmosDiagnostics CosmosDiagnostics { get; set; }
     }
 }

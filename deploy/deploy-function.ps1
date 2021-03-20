@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $true)] [ValidateSet('australiaeast', 'australiasoutheast')] $FunctionLocation
+    [Parameter(Mandatory = $true)] [ValidateSet('Australia East', 'Australia Southeast')] $FunctionLocation
 )
 
 . ./_vars.ps1
@@ -25,5 +25,6 @@ az functionapp create -n $functionApp -g $rg --consumption-plan-location $Functi
 az functionapp config appsettings set -n $functionApp -g $rg --settings `
     "CosmosDbConnectionString=$env:NUMBERS_COSMOS_CONNSTRING" `
     "CosmosDbDatabaseId=$cosmosDB" `
-    "CosmosDbContainerId=$container"
+    "CosmosDbContainerId=$container" `
+    "CosmosApplicationPreferredRegions=$FunctionLocation"
 az functionapp deployment source config -n $functionApp -g $rg --repo-url $repo --branch 'main'

@@ -29,9 +29,9 @@ namespace NumberService
 
         [FunctionName("PutNumber")]
         public async Task<IActionResult> Run(
+            ILogger log,
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "numbers/{key:alpha}")] HttpRequest req,
-            string key,
-            ILogger log)
+            string key)
         {
             var response = (await _container.Scripts.ExecuteStoredProcedureAsync<NumberResult>(
                 "incrementNumber",
@@ -41,13 +41,17 @@ namespace NumberService
             var number = response.Resource;
             number.RequestCharge = response.RequestCharge;
 
-            try
+            // if query string contains ?diagnostics, return CosmosDiagnostics
+            if (req.Query.ContainsKey("diagnostics"))
             {
-                number.CosmosDiagnostics = JsonConvert.DeserializeObject<CosmosDiagnostics>(response.Diagnostics.ToString());
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex, "Could not deserialize Diagnostics");
+                try
+                {
+                    number.CosmosDiagnostics = JsonConvert.DeserializeObject<CosmosDiagnostics>(response.Diagnostics.ToString());
+                }
+                catch (Exception ex)
+                {
+                    log.LogError(ex, "Could not deserialize Diagnostics");
+                }
             }
 
             // As long as sproc is written correctly, this case should never be true.
