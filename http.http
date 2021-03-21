@@ -11,7 +11,7 @@ PUT https://numberservice-aue.azurewebsites.net/api/numbers/free
 GET https://numberservice-aue.azurewebsites.net/api/numbers/free
 
 ### PUT prod ASE
-PUT https://numberservice-ase.azurewebsites.net/api/numbers/free
+PUT https://numberservice-ase.azurewebsites.net/api/numbers/free?diagnostics
 
 ### GET prod ASE
 GET https://numberservice-ase.azurewebsites.net/api/numbers/free
