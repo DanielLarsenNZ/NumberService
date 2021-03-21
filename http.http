@@ -1,4 +1,5 @@
 ### PUT local
+
 PUT http://localhost:7071/api/numbers/free?diagnostics
 
 ### GET local

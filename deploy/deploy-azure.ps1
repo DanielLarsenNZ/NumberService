@@ -18,7 +18,8 @@ az cosmosdb create -n $cosmos -g $rg --default-consistency-level Session `
     --enable-automatic-failover $true `
     --enable-multiple-write-locations $true
 az cosmosdb sql database create -a $cosmos -g $rg -n $cosmosDB --throughput $throughput
-az cosmosdb sql container create -a $cosmos -g $rg -d $cosmosDB -n $container -p $pk
+az cosmosdb sql container create -a $cosmos -g $rg -d $cosmosDB -n $container -p $pk --conflict-resolution-policy @conflict-policy.json
+
 $env:NUMBERS_COSMOS_CONNSTRING = ( az cosmosdb keys list -n $cosmos -g $rg --type 'connection-strings' | ConvertFrom-Json ).connectionStrings[0].connectionString
 
 # APPLICATION INSIGHTS

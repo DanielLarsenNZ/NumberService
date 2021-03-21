@@ -1,4 +1,5 @@
 # Deploys any stored procedures found in /sprocs
+. ./_vars.ps1
 
 $ErrorActionPreference = 'Stop'
 
@@ -6,7 +7,7 @@ Install-Module -Name CosmosDB -Confirm   # Thanks @PlagueHO !
 
 $cosmos = 'numberservice'
 $cosmosdb = 'NumberService'
-$collection = 'Numbers'
+$collection = $container
 
 $cosmosKey = ( az cosmosdb keys list -n $cosmos -g $rg --type 'keys' | ConvertFrom-Json ).primaryMasterKey
 $primaryKey = ConvertTo-SecureString -String $cosmosKey -AsPlainText -Force
