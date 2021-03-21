@@ -1,18 +1,27 @@
 # Number Service
 
-Highly available sequential number generator backed by Cosmos DB with guaranteed uniqueness.
+Highly available sequential number generator backed by Cosmos DB with guaranteed uniqueness<sup>*</sup>.
 
 Free numbers here!
 
     PUT https://numberservice-aue.azurewebsites.net/api/numbers/free
+    GET https://numberservice-aue.azurewebsites.net/api/numbers/free
+
+    PUT https://numberservice-ase.azurewebsites.net/api/numbers/free
+    GET https://numberservice-ase.azurewebsites.net/api/numbers/free
+
+<sup>*</sup> Within same region. For multiple regions, conflict resolution is required.
 
 ## Getting started
 
-Check the constant variables in `deploy-azure.ps1` and `deploy-sprocs.ps1` and make changes if required.
+Check the constant variables in `deploy/_vars.ps1`. Make changes if required.
 
-1. `az login`
-1. Run `deploy/deploy-azure.ps1`
-1. Run `deploy/deploy-sprocs.ps1`
+    cd deploy
+    az login
+    deploy-azure.ps1
+    deploy-sprocs.ps1
+    deploy-function.ps1 -FunctionLocation "Australia East"
+    deploy-function.ps1 -FunctionLocation "Australia Southeast"
 
 ## Requirements
 
@@ -55,6 +64,23 @@ Phase 1 fulfils the sequential guarantee requirement with Azure Cosmos DB and Fu
 
 * Cosmos DB, single region (Australia East), ZR, 400 RU/s, 1GB data = NZ$51.21 /month
 * Azure Functions, Consumption, Australia East, @28RPS = NZ$23.90 /month
+
+## Phase 2
+
+In this phase we are experimenting with multi-region writes and conflict resolution in Cosmos DB.
+
+GET https://numberservice-aue.azurewebsites.net/api/conflicts/free
+GET https://numberservice-ase.azurewebsites.net/api/conflicts/free
+
+Run the test script `test/test-multiregion.ps1` to (eventually) observe a conflict due to multi-region writes. This can take some time; synchronization between regional replicas is super fast!
+
+### Analysis
+
+* 2 Cosmos DB Regions, multi-region writes enabled
+* 2 Azure Functions (consumption), one in each region.
+* ~24 RU/s per number
+* Single partition (per key)
+* As long as clients only PUT to one region, consistency is strong. If multi-region writes, conflict resolution is required.
 
 ## References and links
 
