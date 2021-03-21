@@ -85,3 +85,7 @@ Run the test script `test/test-multiregion.ps1` to (eventually) observe a confli
 ## References and links
 
 <sup>1</sup> [The Chubby lock service for loosely-coupled distributed systems](https://research.google.com/archive/chubby-osdi06.pdf), section 2.12.
+
+Read from conflict feed: <https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-conflicts?tabs=dotnetv3%2Capi-async%2Casync#read-from-conflict-feed>
+
+Use the `ApplicationPreferredRegions` property to set the preferred region: <https://docs.microsoft.com/en-us/azure/cosmos-db/tutorial-global-distribution-sql-api?tabs=dotnetv3%2Capi-async#net-sdk>

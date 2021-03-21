@@ -22,20 +22,3 @@ while ($true) {
         break
     }
 }
-
-<#
-while ($true) {
-    
-    $response = $null
-    $response = Invoke-RestMethod -Method Put -Uri 'https://numberservice-aue.azurewebsites.net/api/numbers/free?diagnostics' 
-    Write-Host $response
-    Write-Host ( $response.CosmosDiagnostics.Context | Where-Object -Property Id -eq 'StoreResponseStatistics' )
-
-    $response = $null
-    $response = Invoke-RestMethod -Method Put -Uri 'https://numberservice-ase.azurewebsites.net/api/numbers/free?diagnostics' 
-    Write-Host $response
-    Write-Host ( $response.CosmosDiagnostics.Context | Where-Object -Property Id -eq 'StoreResponseStatistics' )
-
-    #Start-Sleep -Seconds 5
-}
-#>
