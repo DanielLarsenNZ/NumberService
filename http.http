@@ -8,7 +8,7 @@ GET http://localhost:7071/api/numbers/free
 GET http://localhost:7071/api/conflicts/free
 
 ### PUT prod AUE
-PUT https://numberservice-aue.azurewebsites.net/api/numbers/free
+PUT https://numberservice-aue.azurewebsites.net/api/numbers/free?diagnostics
 
 ### GET prod AUE
 GET https://numberservice-aue.azurewebsites.net/api/numbers/free

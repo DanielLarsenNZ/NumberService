@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
@@ -10,10 +11,12 @@ namespace NumberService
 {
     public class GetNumber
     {
+        private readonly TelemetryClient _telemetry;
         private readonly Container _container;
 
-        public GetNumber(CosmosClient cosmos)
+        public GetNumber(TelemetryClient telemetry, CosmosClient cosmos)
         {
+            _telemetry = telemetry;
             _container = cosmos
                 .GetContainer(
                  Environment.GetEnvironmentVariable("CosmosDbDatabaseId"),
@@ -25,9 +28,27 @@ namespace NumberService
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "numbers/{key:alpha}")] HttpRequest req,
             string key)
         {
-            var response = await _container.ReadItemAsync<NumberResult>(
-                key,
-                new PartitionKey(key));
+            
+
+            var startTime = DateTime.UtcNow;
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+            Response<NumberResult> response = null;
+
+            try
+            {
+                response = await _container.ReadItemAsync<NumberResult>(
+                                key,
+                                new PartitionKey(key));
+            }
+            finally
+            {
+                timer.Stop();
+                _telemetry.TrackCosmosDependency(
+                    response,
+                    $"$key={key}",
+                    startTime,
+                    timer.Elapsed);
+            }
 
             var number = response.Resource;
 

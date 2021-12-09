@@ -33,10 +33,26 @@ namespace NumberService
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "numbers/{key:alpha}")] HttpRequest req,
             string key)
         {
-            var response = (await _container.Scripts.ExecuteStoredProcedureAsync<NumberResult>(
-                "incrementNumber",
-                new PartitionKey(key),
-                new dynamic[] { key, _clientId }));
+            var startTime = DateTime.UtcNow;
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+            Response<NumberResult> response = null;
+
+            try
+            {
+                response = (await _container.Scripts.ExecuteStoredProcedureAsync<NumberResult>(
+                    "incrementNumber",
+                    new PartitionKey(key),
+                    new dynamic[] { key, _clientId }));
+            }
+            finally
+            {
+                timer.Stop();
+                _telemetry.TrackCosmosDependency(
+                    response,
+                    $"incrementNumber $key={key}, $_clientId={_clientId}",
+                    startTime,
+                    timer.Elapsed);
+            }
 
             var number = response.Resource;
             number.RequestCharge = response.RequestCharge;
@@ -75,5 +91,7 @@ namespace NumberService
 
             return new OkObjectResult(number);
         }
+
+
     }
 }

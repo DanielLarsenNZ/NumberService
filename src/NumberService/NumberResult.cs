@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.Cosmos;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace NumberService
 {
@@ -11,7 +10,7 @@ namespace NumberService
         public long Number { get; set; }
 
         public string ClientId { get; set; }
-        
+
         [JsonProperty("_etag")]
         public string ETag { get; set; }
 
