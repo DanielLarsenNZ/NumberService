@@ -2,7 +2,7 @@
 
 Highly available sequential number generator backed by Cosmos DB with guaranteed uniqueness<sup>*</sup>.
 
-Free numbers here!
+[Free numbers here!](https://numberservice-aue.azurewebsites.net/api/numbers/free)
 
     PUT https://numberservice-aue.azurewebsites.net/api/numbers/free
     GET https://numberservice-aue.azurewebsites.net/api/numbers/free
