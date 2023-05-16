@@ -1,10 +1,14 @@
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $true)] [ValidateSet('Australia East', 'Australia Southeast')] $FunctionLocation
+    # TODO: Add more regions here
+    [Parameter(Mandatory = $true)] [ValidateSet('australiaeast', 'australiasoutheast')] $FunctionLocation
 )
+
+$ErrorActionPreference = 'Stop'
 
 . ./_vars.ps1
 
+# TODO: Add more regions here
 $loc = switch ($FunctionLocation) {
     'australiaeast' { 'aue' }
     'australiasoutheast' { 'ase' }

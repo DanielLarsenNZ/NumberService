@@ -18,10 +18,10 @@ Check the constant variables in `deploy/_vars.ps1`. Make changes if required.
 
     cd deploy
     az login
-    deploy-azure.ps1
-    deploy-sprocs.ps1
-    deploy-function.ps1 -FunctionLocation "Australia East"
-    deploy-function.ps1 -FunctionLocation "Australia Southeast"
+    ./deploy-azure.ps1
+    ./deploy-sprocs.ps1
+    ./deploy-function.ps1 -FunctionLocation "australiaeast"
+    ./deploy-function.ps1 -FunctionLocation "australiasoutheast"
 
 ## Requirements
 
