@@ -24,7 +24,7 @@ az storage account create -n $storage -g $rg --tags $tags --location $FunctionLo
 
 
 # FUNCTION APP
-az functionapp create -n $functionApp -g $rg --consumption-plan-location $FunctionLocation --functions-version 3 `
+az functionapp create -n $functionApp -g $rg --consumption-plan-location $FunctionLocation --functions-version 4 `
     --app-insights $insights --app-insights-key $env:NUMBERS_APP_INSIGHTS_IKEY -s $storage
 az functionapp config appsettings set -n $functionApp -g $rg --settings `
     "CosmosDbConnectionString=$env:NUMBERS_COSMOS_CONNSTRING" `
