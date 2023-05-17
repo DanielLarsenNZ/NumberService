@@ -1,10 +1,11 @@
 .vs
 bin
 obj
-.user
-.suo
+*.user
+*.suo
 local.settings.json
 launchSettings.json
 serviceDependencies.local.json
 serviceDependencies.local.json.user
 _work
+PublishProfiles
