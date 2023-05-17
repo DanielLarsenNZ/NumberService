@@ -24,22 +24,37 @@ namespace Microsoft.ApplicationInsights
             DateTimeOffset timestamp,
             TimeSpan duration)
         {
-            var diagnostics = Diagnostics(response);
-            var statistics = diagnostics.Context.FirstOrDefault(c => c.Id == "StoreResponseStatistics");
-
-            var dependency = new DependencyTelemetry
+            try
             {
-                Data = command,
-                Duration = duration,
-                Name = Name(statistics),
-                ResultCode = StatusCode(response),
-                Timestamp = timestamp,
-                Success = StatusCodeSuccess(response),
-                Target = statistics?.LocationEndpoint?.Host,
-                Type = "Azure DocumentDB"   // This type name will display the Cosmos icon in the UI
-            };
+                var diagnostics = Diagnostics(response);
 
-            telemetry.TrackDependency(dependency);
+                if (diagnostics is null || diagnostics.Context is null)
+                {
+                    telemetry.TrackTrace("Cosmos Dependency Diagnostics deserialization error. var diagnostics is null", SeverityLevel.Warning);
+                    return;
+                }
+
+                var statistics = diagnostics.Context.FirstOrDefault(c => c.Id == "StoreResponseStatistics");
+
+                var dependency = new DependencyTelemetry
+                {
+                    Data = command,
+                    Duration = duration,
+                    Name = Name(statistics),
+                    ResultCode = StatusCode(response),
+                    Timestamp = timestamp,
+                    Success = StatusCodeSuccess(response),
+                    Target = statistics?.LocationEndpoint?.Host,
+                    Type = "Azure DocumentDB"   // This type name will display the Cosmos icon in the UI
+                };
+
+                telemetry.TrackDependency(dependency);
+            }
+            catch (Exception ex)
+            {
+                // log and continue
+                telemetry.TrackException(ex);
+            }
         }
 
         private static string Name(NumberService.Context statistics)

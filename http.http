@@ -1,11 +1,15 @@
 ### PUT local
-PUT http://localhost:7071/api/numbers/free?diagnostics
+PUT http://localhost:7071/api/numbers/foo
 
 ### GET local
-GET http://localhost:7071/api/numbers/free
+GET http://localhost:7071/api/numbers/foo
 
 ### GET Conflicts local
-GET http://localhost:7071/api/conflicts/free
+GET http://localhost:7071/api/conflicts/foo
+
+### GET local
+GET http://localhost:7071/
+
 
 ### PUT prod AUE
 PUT https://numberservice-aue.azurewebsites.net/api/numbers/free?diagnostics

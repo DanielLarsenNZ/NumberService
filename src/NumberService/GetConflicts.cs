@@ -33,8 +33,8 @@ namespace NumberService
         {
             // https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-conflicts?tabs=dotnetv3%2Capi-async%2Casync#read-from-conflict-feed
 
-            var sql = new QueryDefinition("Select * from c where id = @id");
-            sql.WithParameter("id", key);
+            var sql = new QueryDefinition("Select * from c where c.id = @key");
+            sql.WithParameter("@key", key);
 
             FeedIterator<ConflictProperties> conflictFeed = _container.Conflicts.GetConflictQueryIterator<ConflictProperties>(sql);
 
@@ -49,18 +49,16 @@ namespace NumberService
 
                     // Read the conflicted content
                     conflictResult.Conflict = _container.Conflicts.ReadConflictContent<NumberResult>(conflict);
+
+                    // If invalid conflict, log and break
+                    if (conflictResult.Conflict is null)
+                    {
+                        _telemetry.TrackTrace("GetConflicts: conflictResult.Conflict is null");
+                        break;
+                    }
+
                     conflictResult.Current = await _container.Conflicts.ReadCurrentAsync<NumberResult>(conflict, new PartitionKey(conflictResult.Conflict.Key));
-
                     conflictResults.Add(conflictResult);
-
-
-
-
-                    // Do manual merge among documents
-                    //await container.ReplaceItemAsync<NumberResult>(intendedChanges, intendedChanges.Key, new PartitionKey(intendedChanges.Key));
-
-                    // Delete the conflict
-                    //await container.Conflicts.DeleteAsync(conflict, new PartitionKey(intendedChanges.MyPartitionKey));
                 }
             }
 

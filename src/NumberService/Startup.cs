@@ -12,10 +12,11 @@ namespace NumberService
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddSingleton((c) => {
+            builder.Services.AddSingleton((c) =>
+            {
                 var options = new CosmosClientOptions();
                 string preferredRegions = Environment.GetEnvironmentVariable("CosmosApplicationPreferredRegions");
-                
+
                 if (!string.IsNullOrEmpty(preferredRegions))
                 {
                     var regions = preferredRegions.Split(';').ToList();

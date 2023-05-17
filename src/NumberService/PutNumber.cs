@@ -39,10 +39,10 @@ namespace NumberService
 
             try
             {
-                response = (await _container.Scripts.ExecuteStoredProcedureAsync<NumberResult>(
+                response = await _container.Scripts.ExecuteStoredProcedureAsync<NumberResult>(
                     "incrementNumber",
                     new PartitionKey(key),
-                    new dynamic[] { key, _clientId }));
+                    new[] { key, _clientId });
             }
             finally
             {
@@ -91,7 +91,5 @@ namespace NumberService
 
             return new OkObjectResult(number);
         }
-
-
     }
 }

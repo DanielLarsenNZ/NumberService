@@ -28,7 +28,7 @@ namespace NumberService
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "numbers/{key:alpha}")] HttpRequest req,
             string key)
         {
-            
+
 
             var startTime = DateTime.UtcNow;
             var timer = System.Diagnostics.Stopwatch.StartNew();
