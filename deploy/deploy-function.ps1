@@ -31,4 +31,6 @@ az functionapp config appsettings set -n $functionApp -g $rg --settings `
     "CosmosDbDatabaseId=$cosmosDB" `
     "CosmosDbContainerId=$container" `
     "CosmosApplicationPreferredRegions=$FunctionLocation"
-az functionapp deployment source config -n $functionApp -g $rg --repo-url $repo --branch 'main'
+
+#TODO: SCM deployment with basic auth has been deprecated. Enhance to use GH Actions instead.
+    #az functionapp deployment source config -n $functionApp -g $rg --repo-url $repo --branch 'main'
