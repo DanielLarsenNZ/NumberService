@@ -25,8 +25,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'numberservice-aue'           # set this to your function app name on Azure
-  AZURE_FUNCTIONAPP_NAME2: 'numberservice-ase'          # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_NAME: 'numberservice-aue'           # set this to your function app #1 name on Azure
+  AZURE_FUNCTIONAPP_NAME2: 'numberservice-ase'          # set this to your function app #2 name on Azure
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './src/NumberService' # set this to the path to your function app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'                               # set this to the dotnet version to use (e.g. '2.1.x', '3.1.x', '5.0.x')
 
@@ -35,34 +35,34 @@ jobs:
     runs-on: windows-latest # For Linux, use ubuntu-latest
     environment: dev
     steps:
-    - name: 'Checkout GitHub Action'
+    - name: 'git checkout'
       uses: actions/checkout@v3
 
-    - name: 'Login via Azure CLI'
+    - name: 'az login'
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }} 
 
-    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+    - name: dotnet install ${{ env.DOTNET_VERSION }} 
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: 'Resolve Project Dependencies Using Dotnet'
+    - name: 'dotnet publish'
       shell: pwsh # For Linux, use bash
       run: |
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
 
-    - name: 'Run Azure Functions Action'
+    - name: 'deploy function 1'
       uses: Azure/functions-action@v1
       id: fa1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
 
-    - name: 'Run Azure Functions Action'
+    - name: 'deploy function 2'
       uses: Azure/functions-action@v1
       id: fa2
       with:

@@ -16,21 +16,21 @@ $loc = switch ($FunctionLocation) {
 }
 
 $functionApp = "numberservice-$loc"
-$repo = 'https://github.com/DanielLarsenNZ/NumberService.git'
 $storage = "numservfn$loc"
 
 # STORAGE ACCOUNT
 az storage account create -n $storage -g $rg --tags $tags --location $FunctionLocation --sku 'Standard_LRS'
 
+# Get cosmos and application insights keys
+$cosmosConnString = ( az cosmosdb keys list -n $cosmos -g $rg --type 'connection-strings' | ConvertFrom-Json ).connectionStrings[0].connectionString
+$insightsKey = ( az monitor app-insights component show -a $insights -g $rg | ConvertFrom-Json ).instrumentationKey
+
 
 # FUNCTION APP
 az functionapp create -n $functionApp -g $rg --consumption-plan-location $FunctionLocation --functions-version 4 `
-    --app-insights $insights --app-insights-key $env:NUMBERS_APP_INSIGHTS_IKEY -s $storage
+    --app-insights $insights --app-insights-key $insightsKey -s $storage
 az functionapp config appsettings set -n $functionApp -g $rg --settings `
-    "CosmosDbConnectionString=$env:NUMBERS_COSMOS_CONNSTRING" `
+    "CosmosDbConnectionString=$cosmosConnString" `
     "CosmosDbDatabaseId=$cosmosDB" `
     "CosmosDbContainerId=$container" `
     "CosmosApplicationPreferredRegions=$FunctionLocation"
-
-#TODO: SCM deployment with basic auth has been deprecated. Enhance to use GH Actions instead.
-    #az functionapp deployment source config -n $functionApp -g $rg --repo-url $repo --branch 'main'

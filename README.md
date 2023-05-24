@@ -4,24 +4,39 @@ Highly available sequential number generator backed by Cosmos DB with guaranteed
 
 [Free numbers here!](https://numberservice-aue.azurewebsites.net/api/numbers/free)
 
+> ⚠️ This service is provided for demonstration purposes only and may go offline or reset at any time.
+
     PUT https://numberservice-aue.azurewebsites.net/api/numbers/free
     GET https://numberservice-aue.azurewebsites.net/api/numbers/free
 
     PUT https://numberservice-ase.azurewebsites.net/api/numbers/free
     GET https://numberservice-ase.azurewebsites.net/api/numbers/free
 
-<sup>*</sup> Within same region. For multiple regions, conflict resolution is required.
+<sup>*</sup> _Within same region. For multiple regions, conflict resolution is required._
 
 ## Getting started
 
-Check the constant variables in `deploy/_vars.ps1`. Make changes if required.
+Fork this repo and then clone:
 
-    cd deploy
-    az login
-    ./deploy-azure.ps1
-    ./deploy-sprocs.ps1
-    ./deploy-function.ps1 -FunctionLocation "australiaeast"
-    ./deploy-function.ps1 -FunctionLocation "australiasoutheast"
+```bash
+git clone https://github.com/(your_user_or_org_name)/NumberService
+cd NumberService
+```
+
+Edit the constant variables in `deploy/_vars.ps1`. Make changes where required.
+
+Now deploy the Azure resources.
+
+```bash
+cd deploy
+az login
+./deploy-azure.ps1
+./deploy-sprocs.ps1
+./deploy-function.ps1 -FunctionLocation "australiaeast"
+./deploy-function.ps1 -FunctionLocation "australiasoutheast"
+```
+
+Now run the GitHub Action to publish the source code to the Functions.
 
 ## Requirements
 
