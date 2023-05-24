@@ -7,6 +7,7 @@ $pk = '/id'
 $primaryCosmosLocation = 'australiaeast'
 $secondaryCosmosLocation = 'australiasoutheast'
 
+
 # RESOURCE GROUP
 az group create -n $rg --location $location --tags $tags
 
@@ -19,7 +20,3 @@ az cosmosdb create -n $cosmos -g $rg --default-consistency-level Session `
     --enable-multiple-write-locations $true
 az cosmosdb sql database create -a $cosmos -g $rg -n $cosmosDB --throughput $throughput
 az cosmosdb sql container create -a $cosmos -g $rg -d $cosmosDB -n $container -p $pk --conflict-resolution-policy @conflict-policy.json
-
-
-# APPLICATION INSIGHTS
-az monitor app-insights component create --app $insights --location $location -g $rg --tags $tags
