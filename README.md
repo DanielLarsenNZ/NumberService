@@ -1,6 +1,12 @@
 # Number Service
 
-Highly available sequential number generator backed by Cosmos DB with guaranteed uniqueness<sup>*</sup>.
+Highly available sequential number generator on Azure Functions backed by Cosmos DB with guaranteed uniqueness<sup>*</sup>.
+
+* .NET 6
+* Functions v4
+* Deployment scripts and GitHub Action workflow
+* Application insights integration
+* Supports multi-region deployments for high availability, with conflict resolution.
 
 [Free numbers here!](https://numberservice-aue.azurewebsites.net/api/numbers/free)
 
