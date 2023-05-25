@@ -22,3 +22,9 @@ PUT https://numberservice-ase.azurewebsites.net/api/numbers/free?diagnostics
 
 ### GET prod ASE
 GET https://numberservice-ase.azurewebsites.net/api/numbers/free
+
+### GET Conflicts AUE
+GET https://numberservice-aue.azurewebsites.net/api/conflicts/free
+
+### GET Conflicts ASE
+GET https://numberservice-ase.azurewebsites.net/api/conflicts/free

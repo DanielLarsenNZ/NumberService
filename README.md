@@ -23,9 +23,11 @@ git clone https://github.com/(your_user_or_org_name)/NumberService
 cd NumberService
 ```
 
-Edit the constant variables in `deploy/_vars.ps1`. Make changes where required.
+* Edit the constant variables in `deploy/_vars.ps1`. Make changes where required.
 
 Now deploy the Azure resources.
+
+> `deploy-azure.ps1` will create a service principal and echo out the RBAC credentials as JSON. Copy the JSON text and paste into a GitHub Actions repository secret, as described below.
 
 ```bash
 cd deploy
@@ -36,7 +38,12 @@ az login
 ./deploy-function.ps1 -FunctionLocation "australiasoutheast"
 ```
 
-Now run the GitHub Action to publish the source code to the Functions.
+### GitHub Action
+
+The GitHub Action requires a repo secret named `AZURE_RBAC_CREDENTIALS`. Copy this value from the output of `deploy-azure.ps1` and paste into the secret value. Note that the service principal is scoped to the Resource Group (with contributor access) and not the individual web apps. For more information, see [Using Azure Service Principal for RBAC as Deployment Credential](https://github.com/marketplace/actions/azure-functions-action#using-azure-service-principal-for-rbac-as-deployment-credential).
+
+* Now run the GitHub Action to publish the source code to the Functions.
+
 
 ## Requirements
 
